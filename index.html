@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIZY MIND</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{
+  background:#0b0f1a url('background.jpg') no-repeat center center fixed;
+  background-size:cover;
+  color:#fff;min-height:100vh;padding:12px;padding-bottom:90px;max-width:480px;margin:0 auto;
+}
+/* Voile pour que les commandes restent lisibles mais le fond reste visible */
+body::before{content:'';position:fixed;inset:0;background:linear-gradient(180deg,rgba(5,8,20,.35),rgba(5,8,20,.65));backdrop-filter:blur(1px);z-index:-1}
+.top{display:flex;justify-content:space-between;align-items:center;padding:8px 4px}
+.top b{font-size:18px;letter-spacing:1px;text-shadow:0 2px 12px rgba(0,0,0,.6)}
+.top b span{color:#4fc3f7}
+.online{display:flex;align-items:center;gap:6px;font-size:12px;color:#00e676;font-weight:700;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(12px);padding:6px 10px;border-radius:20px}
+.dot{width:9px;height:9px;background:#00e676;border-radius:50%;animation:blink 1s infinite;box-shadow:0 0 10px #00e676}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+/* --- CARTES VITRE EN HARMONIE AVEC LE FOND --- */
+.glass{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-radius:22px;padding:14px;margin-top:12px;box-shadow:0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.15)}
+.glass h3{font-size:13px;color:#fff}
+.close{float:right;background:rgba(255,59,48,.85);backdrop-filter:blur(10px);color:#fff;border:1px solid rgba(255,255,255,.25);width:26px;height:26px;border-radius:50%;font-weight:900;cursor:pointer}
+
+/* --- COMMANDES / BOUTONS EN HARMONIE --- */
+.btn-retour{width:100%;padding:12px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.08);backdrop-filter:blur(14px);color:#fff;border-radius:14px;font-weight:800;cursor:pointer;margin-bottom:10px}
+.btn-retour2{width:100%;padding:12px;border:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.25);backdrop-filter:blur(12px);color:#d0d5e5;border-radius:14px;font-weight:700;cursor:pointer;margin-top:8px}
+.balances{display:flex;gap:10px;margin-top:6px}
+.bal{flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(18px);border-radius:18px;padding:12px;text-align:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.bal small{color:#d0d5e5;font-size:11px}.bal b{font-size:19px;display:block;margin-top:4px}
+.mises{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.mise{padding:11px 0;text-align:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(12px);border-radius:13px;cursor:pointer;font-weight:700;color:#fff}
+.mise.active{background:linear-gradient(135deg,#2196f3,#00c9a7);border-color:transparent;box-shadow:0 4px 16px rgba(0,201,167,.4)}
+.tours{display:flex;gap:8px;margin-top:8px}
+.tour{flex:1;padding:11px;text-align:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(12px);border-radius:13px;cursor:pointer;font-weight:800}
+.tour.active{background:linear-gradient(135deg,#2196f3,#00c9a7);border-color:transparent;box-shadow:0 4px 16px rgba(0,201,167,.4)}
+/* Bouton principal - dégradé MM bleu -> vert */
+.btn-suivant{width:100%;padding:15px;border:1px solid rgba(255,255,255,.25);border-radius:15px;background:linear-gradient(135deg,#2196f3,#00c9a7);color:#fff;font-weight:900;margin-top:12px;cursor:pointer;display:none;box-shadow:0 6px 20px rgba(0,201,167,.35)}
+.paire{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(18px);border-radius:20px;padding:14px;margin-bottom:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.paire-top{display:flex;justify-content:space-between;align-items:center}
+.paire-top b{font-size:15px}
+.badge{padding:6px 12px;border-radius:20px;font-size:12px;font-weight:800;border:1px solid rgba(255,255,255,.25)}
+.badge.haut{background:linear-gradient(135deg,#ff3b30,#ff8a00);color:#fff}
+.badge.bas{background:linear-gradient(135deg,#2196f3,#00c9a7);color:#fff}
+.paire small{color:#d0d5e5;font-size:12px}
+.paire-grid{display:flex;gap:10px;margin-top:12px}
+.paire-grid div{flex:1}
+.paire-grid small{font-size:11px;color:#aab0c5}
+.paire-grid b{font-size:13px;display:block;margin-top:2px}
+.btn-lancer{width:100%;padding:14px;border:1px solid rgba(255,255,255,.25);border-radius:14px;background:linear-gradient(135deg,#2196f3,#00c9a7);color:#fff;font-weight:900;margin-top:12px;cursor:pointer;box-shadow:0 6px 18px rgba(0,201,167,.3)}
+.bar{height:8px;background:rgba(255,255,255,.14);border-radius:10px;margin:10px 0;overflow:hidden}
+.bar div{height:100%;background:linear-gradient(90deg,#ffcc00,#ff3b30);width:0%;transition:.4s}
+.row2{display:flex;gap:10px}
+.box{flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(14px);border-radius:16px;padding:12px}
+.box small{font-size:11px;color:#aab0c5}.box b{font-size:20px;display:block;margin-top:4px}
+.benef{font-size:26px;font-weight:900;text-shadow:0 0 14px rgba(0,230,118,.4)}
+.neg{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;align-items:center}
+.neg small{color:#aab0c5;font-size:11px}.neg b{font-size:14px}
+.pill{font-size:11px;padding:5px 10px;border-radius:20px;font-weight:800;border:1px solid rgba(255,255,255,.2)}
+.pill.wait{background:rgba(255,23,68,.85);color:#fff}.pill.win{background:rgba(0,200,83,.85);color:#fff}.pill.lose{background:rgba(255,23,68,.85);color:#fff}.pill.run{background:rgba(255,152,0,.85);color:#fff}
+.etape{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+/* STOP en vitre rouge, en harmonie, pas rouge dur */
+.btn-stop{width:100%;padding:18px;border:1px solid rgba(255,255,255,.3);border-radius:15px;background:linear-gradient(135deg,rgba(255,59,48,.9),rgba(255,107,53,.9));backdrop-filter:blur(14px);color:#fff;font-weight:900;font-size:16px;margin-top:12px;cursor:pointer;display:none;box-shadow:0 8px 22px rgba(255,59,48,.35)}
+.tabs{position:fixed;bottom:0;left:0;right:0;background:rgba(10,14,30,.75);backdrop-filter:blur(18px);border-top:1px solid rgba(255,255,255,.15);display:flex;max-width:480px;margin:0 auto}
+.tab{flex:1;padding:14px;text-align:center;cursor:pointer;font-size:12px;font-weight:800;color:#8a93a8}
+.tab.active{color:#fff;background:rgba(255,255,255,.08)}
+.social input{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.3);backdrop-filter:blur(12px);color:#fff;margin:10px 0;text-align:center;font-size:12px}
+.btn-copy{width:100%;padding:13px;border:1px solid rgba(255,255,255,.25);border-radius:13px;background:linear-gradient(135deg,#2196f3,#00c9a7);color:#fff;font-weight:900;cursor:pointer}
+.btn-share{width:100%;padding:13px;border:1px solid rgba(255,255,255,.25);border-radius:13px;background:rgba(0,200,83,.9);backdrop-filter:blur(12px);color:#fff;font-weight:900;cursor:pointer;margin-top:8px}
+.hidden{display:none}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div><b>MIZY <span>MIND</span></b><div style="font-size:11px;color:#d0d5e5">✕ MIZY MIND</div></div>
+  <div class="online"><span class="dot"></span> En ligne</div>
+</div>
+
+<div class="balances">
+  <div class="bal"><small>🎮 DÉMO</small><b id="demoBal">10 000.00 $</b></div>
+  <div class="bal"><small>💵 RÉEL</small><b id="realBal">0.00 $</b></div>
+</div>
+
+<div id="pageTrading">
+  <div class="glass" id="fenetre1">
+    <button class="close" onclick="toutEnlever()">✕</button>
+    <h3>FENÊTRE 1 • COMMERCE + MISE</h3>
+    <p style="font-size:12px;color:#d0d5e5;margin-bottom:10px">Choisis ta mise et ton commerce pour passer aux paires.</p>
+    <h3>💰 MISE DE DÉPART</h3>
+    <div class="mises" id="mises"></div>
+    <h3 style="margin-top:14px">🔁 NOMBRE DE COMMERCE</h3>
+    <div class="tours" id="tours"></div>
+    <div id="choixResume" style="margin-top:10px;font-size:12px;color:#00e676;font-weight:700;text-align:center"></div>
+    <button class="btn-suivant" id="btnSuivant" onclick="allerPaires()">SUIVANT → VOIR LES PAIRES</button>
+  </div>
+
+  <div class="glass hidden" id="fenetre2">
+    <button class="close" onclick="toutEnlever()">✕</button>
+    <button class="btn-retour" onclick="retourFenetre1()">← Retour</button>
+    <h3 style="font-size:16px">Choisissez La Paire</h3>
+    <p style="font-size:12px;color:#d0d5e5"><b>MIZY MIND</b> scanne chaque paire et recherche la meilleure entrée.<br>Choisissez une paire pour continuer.</p>
+    <p style="font-size:12px;margin-top:8px">Mise <b id="miseRappel">2.5$</b> • Commerce <b id="tourRappel">9</b> • <span style="color:#00e676">● LIVE</span> mis à jour il y a <span id="lastUpdate">0</span>s</p>
+    <div id="listePaires" style="margin-top:12px"></div>
+    <p style="font-size:11px;text-align:center;color:#d0d5e5">4 paires / 4 affichées - Aucune paire cachée</p>
+    <button class="btn-retour2" onclick="retourFenetre1()">← Retour à l'étape 1</button>
+  </div>
+
+  <div class="glass hidden" id="fenetre3">
+    <button class="close" onclick="toutEnlever()">✕</button>
+    <button class="btn-retour" onclick="retourPairesDepuisSession()">← Retour</button>
+    <div class="bar"><div id="barFill"></div></div>
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);padding:8px 12px;border-radius:20px;font-size:12px">COMMERCE <b id="commerceTxt">0/9</b></span>
+      <span style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);padding:8px 12px;border-radius:20px;font-size:12px">🟢 <span id="paireTxt">Brent Oil OTC</span></span>
+    </div>
+    <div class="row2" style="margin-top:12px">
+      <div class="box"><small>MONTANT DE DÉPART</small><b id="montantDepart">$1.00</b></div>
+      <div class="box"><small>SOLDE</small><b id="soldeTxt">$10,000.00</b></div>
+    </div>
+    <div class="box" style="margin-top:10px">
+      <small>BÉNÉFICE DE LA SESSION</small>
+      <div class="benef" id="benefTxt" style="color:#00e676">+$0.88</div>
+      <p id="benefMsg" style="font-size:12px;color:#d0d5e5">La session en cours se maintient au-dessus du solde de départ.</p>
+      <p style="font-size:11px;color:#00e676;margin-top:6px">Taux actuel : <b id="tauxEnCours">77.5%</b> • En direct • <span id="dirTxt">BAISSIÈRE</span></p>
+    </div>
+    <div id="histo" style="margin-top:10px"></div>
+    <button class="btn-stop" id="btnStop" onclick="stopUrgent()">■ STOP - ARRÊT IMMÉDIAT</button>
+    <button class="btn-retour2" onclick="retourPairesDepuisSession()">← Retour à l'étape 2 • Paires</button>
+    <button class="btn-retour2" onclick="retourFenetre1DepuisSession()">← Retour à l'étape 1 • Mise / Commerce</button>
+    <div class="glass" style="margin-top:12px;text-align:center;font-size:12px;color:#d0d5e5">Ne fermez pas l'application pendant le trading. La session continue de fonctionner et les mises à jour en direct se poursuivent ici.</div>
+  </div>
+</div>
+
+<div id="pageSocial" class="hidden">
+  <button class="btn-retour" onclick="showTab('trading')" style="margin-top:12px">← RETOUR • ALLER AU TRADING</button>
+  <div class="glass social" style="text-align:center">
+    <h3>🎁 ONGLET SOCIAL • PARRAINAGE</h3>
+    <p style="font-size:12px;color:#d0d5e5">Partage ton lien, tes amis deviennent tes filleuls.</p>
+    <p style="margin-top:10px">Amis invités : <b style="color:#00e676">0</b></p>
+    <input id="refLink" value="t.me/MizyMindBot?start=ref_12345" readonly>
+    <button class="btn-copy" onclick="copierLien()">📋 COPIER MON LIEN</button>
+    <button class="btn-share" onclick="partagerLien()">↗ PARTAGER MON LIEN</button>
+    <p style="font-size:11px;margin-top:10px">SSID : •••••••• mémorisé • <span style="color:#4fc3f7;cursor:pointer" onclick="changerSSID()">Changer SSID</span></p>
+    <input id="ssidInput" placeholder="Colle ton SSID ici une seule fois" style="display:none">
+    <button onclick="saveSSID()" id="ssidBtn" style="display:none;margin-top:8px;padding:10px;width:100%;border-radius:12px;background:linear-gradient(135deg,#2196f3,#00c9a7);border:1px solid rgba(255,255,255,.25);font-weight:800;color:#fff">ENREGISTRER SSID</button>
+  </div>
+  <button class="btn-retour2" onclick="showTab('trading')">← Retour au Trading</button>
+</div>
+
+<div class="tabs">
+  <div class="tab" id="tabRef" onclick="showTab('social')">👥 Référence</div>
+  <div class="tab" onclick="showTab('social')">🎡 Roue</div>
+  <div class="tab active" id="tabTrading" onclick="showTab('trading')">📊 Commerce</div>
+  <div class="tab" onclick="showTab('social')">👤 Profil</div>
+</div>
+
+<script>
+const MISES=[1,1.5,2,2.5,5,10,20,50];
+const TOURS=[3,6,9,12];
+const PAIRES=[
+  {nom:"Brent Oil OTC", dir:"BAISSIÈRE", haut:false, taux:77.2, rendement:92},
+  {nom:"EUR/USD OTC", dir:"HAUSSIÈRE", haut:true, taux:78.5, rendement:92},
+  {nom:"USD/JPY OTC", dir:"HAUSSIÈRE", haut:true, taux:76.8, rendement:92},
+  {nom:"GBP/USD OTC", dir:"BAISSIÈRE", haut:false, taux:79.1, rendement:92},
+];
+let mise=1, tours=9, enCours=false, timer=null, count=0, solde=10000, benef=0, miseActuelle=1, paireActive=null, lastUpdateSec=0;
+function changerTaux(){
+  PAIRES.forEach(p=>{ let n=p.taux+(Math.random()*1.6-0.8); if(n<75) n=75+Math.random()*0.5; if(n>80) n=80-Math.random()*0.5; p.taux=n; });
+  lastUpdateSec=0;
+  PAIRES.forEach((p,i)=>{const el=document.getElementById('taux-'+i); if(el) el.textContent='~'+p.taux.toFixed(1)+'%';});
+  if(paireActive){const idx=PAIRES.indexOf(paireActive); const el=document.getElementById('tauxEnCours'); if(el) el.textContent=PAIRES[idx].taux.toFixed(1)+'%';}
+}
+setInterval(changerTaux,3000);
+setInterval(()=>{lastUpdateSec++; const el=document.getElementById('lastUpdate'); if(el) el.textContent=lastUpdateSec;},1000);
+function renderMises(){
+  document.getElementById('mises').innerHTML=MISES.map(m=>`<div class="mise ${m===mise?'active':''}" onclick="setMise(${m})">${m}$</div>`).join('');
+  document.getElementById('tours').innerHTML=TOURS.map(t=>`<div class="tour ${t===tours?'active':''}" onclick="setTour(${t})">${t}</div>`).join('');
+  document.getElementById('choixResume').textContent=`✅ Mise ${mise}$ + Commerce ${tours} choisis`;
+  document.getElementById('btnSuivant').style.display='block';
+}
+function setMise(m){mise=m;renderMises();}
+function setTour(t){tours=t;renderMises();}
+function allerPaires(){ document.getElementById('fenetre1').classList.add('hidden'); document.getElementById('fenetre2').classList.remove('hidden'); document.getElementById('fenetre3').classList.add('hidden'); document.getElementById('miseRappel').textContent=mise+'$'; document.getElementById('tourRappel').textContent=tours; renderPaires(); }
+function retourFenetre1(){ document.getElementById('fenetre2').classList.add('hidden'); document.getElementById('fenetre3').classList.add('hidden'); document.getElementById('fenetre1').classList.remove('hidden'); renderMises(); }
+function retourPairesDepuisSession(){ if(enCours){ if(confirm('Ça trade encore. Faire STOP et retourner aux paires ?')){ stopUrgent(); document.getElementById('fenetre3').classList.add('hidden'); document.getElementById('fenetre2').classList.remove('hidden'); renderPaires(); } } else { document.getElementById('fenetre3').classList.add('hidden'); document.getElementById('fenetre2').classList.remove('hidden'); renderPaires(); } }
+function retourFenetre1DepuisSession(){ if(enCours){ if(confirm('Ça trade encore. Faire STOP et retourner à Mise / Commerce ?')){ stopUrgent(); document.getElementById('fenetre3').classList.add('hidden'); document.getElementById('fenetre1').classList.remove('hidden'); renderMises(); } } else { document.getElementById('fenetre3').classList.add('hidden'); document.getElementById('fenetre1').classList.remove('hidden'); renderMises(); } }
+function renderPaires(){ document.getElementById('listePaires').innerHTML=PAIRES.map((p,i)=>{ return `<div class="paire"><div class="paire-top"><b>${p.nom}</b><span class="badge ${p.haut?'haut':'bas'}">${p.haut?'Haut':'Bas'}</span></div><small>Taux de victoire: <b style="color:#00e676" id="taux-${i}">~${p.taux.toFixed(1)}%</b></small><div class="paire-grid"><div><small>Rendement</small><b>${p.rendement}%</b></div><div><small>Tendance</small><b>${p.dir}</b></div><div><small>Marché</small><b>${p.dir==='HAUSSIÈRE'?'Haussier':'Baissier'}</b></div></div><button class="btn-lancer" onclick="lancerDepuisPaire(${i})">▶ LANCER - ${p.haut?'HAUT':'BAS'} • ${p.dir}</button></div>`; }).join(''); }
+function lancerDepuisPaire(i){ paireActive=PAIRES[i]; enCours=true; count=0; miseActuelle=mise; benef=0; document.getElementById('fenetre2').classList.add('hidden'); document.getElementById('fenetre3').classList.remove('hidden'); document.getElementById('btnStop').style.display='block'; document.getElementById('histo').innerHTML=''; document.getElementById('paireTxt').textContent=paireActive.nom; document.getElementById('montantDepart').textContent='$'+mise.toFixed(2); document.getElementById('tauxEnCours').textContent=paireActive.taux.toFixed(1)+'%'; document.getElementById('dirTxt').textContent=paireActive.dir; document.getElementById('commerceTxt').textContent=`0/${tours}`; document.getElementById('soldeTxt').textContent='$'+solde.toLocaleString('en-US',{minimumFractionDigits:2}); document.getElementById('benefTxt').textContent='+$0.00'; document.getElementById('benefTxt').style.color='#00e676'; document.getElementById('benefMsg').textContent='La session en cours se maintient au-dessus du solde de départ.'; faireTrade(); timer=setInterval(faireTrade,5000); }
+function faireTrade(){ if(!enCours) return; if(count>=tours){ arreter(); return; } count++; const gagne=Math.random()>0.45; let gain=gagne? miseActuelle*0.88 : -miseActuelle; benef+=gain; solde+=gain; document.getElementById('commerceTxt').textContent=`${count}/${tours}`; document.getElementById('soldeTxt').textContent='$'+solde.toLocaleString('en-US',{minimumFractionDigits:2}); document.getElementById('demoBal').textContent=solde.toFixed(2)+' $'; document.getElementById('benefTxt').textContent=(benef>=0?'+':'')+'$'+benef.toFixed(2); document.getElementById('benefTxt').style.color=benef>=0?'#00e676':'#ff1744'; document.getElementById('benefMsg').textContent=benef>=0?'La session en cours se maintient au-dessus du solde de départ.':'La session en cours est inférieure au solde de départ et est toujours en train de récupérer.'; document.getElementById('barFill').style.width=(count/tours*100)+'%'; let histo=document.getElementById('histo'); let d=document.createElement('div'); d.className='neg'; d.innerHTML=`<div><small>NÉGOCIER ${count}</small><br><b>${gagne?'Clôturé en bénéfice':'Clôturé en perte'}</b></div><span class="pill ${gagne?'win':'lose'}">${gagne?'+':''}$${gain.toFixed(2)}</span>`; histo.prepend(d); let e=document.createElement('div'); e.className='etape'; e.innerHTML=`<div><small style="color:#aab0c5">ÉTAPE ${count}</small><br><b>$${miseActuelle.toFixed(2)}</b></div><span class="pill ${gagne?'win':'lose'}">${gagne?'+':''}$${(gagne?miseActuelle*0.88:miseActuelle).toFixed(2)}</span>`; histo.prepend(e); if(count<tours){ let a=document.createElement('div'); a.className='neg'; a.innerHTML=`<div><small>NÉGOCIER ${count+1}</small><br><b>En attente</b></div><span class="pill wait">En attente</span>`; histo.prepend(a); } if(gagne) miseActuelle=mise; else miseActuelle=miseActuelle*2; }
+function stopUrgent(){ enCours=false; clearInterval(timer); document.getElementById('btnStop').style.display='none'; alert('⛔ STOP - Arrêt immédiat'); }
+function arreter(){ enCours=false; clearInterval(timer); document.getElementById('btnStop').style.display='none'
